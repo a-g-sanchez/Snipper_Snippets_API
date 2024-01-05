@@ -13,7 +13,7 @@ type Snippet struct {
 	Code     string `yaml:"code"`
 }
 
-func ParseYaml() {
+func ParseYaml() []Snippet {
 
 	var snippetSlice []Snippet
 
@@ -27,5 +27,5 @@ func ParseYaml() {
 		fmt.Printf("Unmashal data: %d\n", err)
 	}
 
-	fmt.Println(snippetSlice)
+	return snippetSlice
 }
