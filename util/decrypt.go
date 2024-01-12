@@ -16,7 +16,7 @@ func Decrypt(ciphertext string) ([]byte, error) {
 		return nil, err
 	}
 
-	block, err := aes.NewCipher(config.Key)
+	block, err := aes.NewCipher(config.LoadEnv())
 	if err != nil {
 		return nil, err
 	}

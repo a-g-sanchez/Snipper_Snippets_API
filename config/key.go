@@ -1,3 +1,19 @@
 package config
 
-var Key = []byte("your_secret_key_32_bytes_long_bb")
+import (
+	"fmt"
+	"os"
+
+	"github.com/joho/godotenv"
+)
+
+func LoadEnv() []byte {
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Error loading .env file")
+	}
+
+	var key = []byte(os.Getenv("KEY"))
+
+	return key
+}

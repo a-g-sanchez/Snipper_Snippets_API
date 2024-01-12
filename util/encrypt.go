@@ -10,7 +10,7 @@ import (
 )
 
 func Encrypt(data []byte) (string, error) {
-	block, err := aes.NewCipher(config.Key)
+	block, err := aes.NewCipher(config.LoadEnv())
 	if err != nil {
 		return "", err
 	}
