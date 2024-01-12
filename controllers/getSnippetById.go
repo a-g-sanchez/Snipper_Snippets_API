@@ -26,6 +26,13 @@ func GetSnippetById(c *gin.Context, slice []util.Snippet) {
 		}
 	}
 
+	decrypted, err := util.Decrypt(foundSnippet.Code)
+	if err != nil {
+		panic(err)
+	}
+
+	foundSnippet.Code = string(decrypted)
+
 	c.IndentedJSON(http.StatusOK, gin.H{
 		"message": foundSnippet,
 	})

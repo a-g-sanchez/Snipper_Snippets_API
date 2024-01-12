@@ -22,3 +22,5 @@ go.work
 
 # Personal note keeper
 notes.txt
+
+*.env
