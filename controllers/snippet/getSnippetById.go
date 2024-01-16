@@ -1,4 +1,4 @@
-package controllers
+package snippet
 
 import (
 	"net/http"
@@ -26,6 +26,9 @@ func GetSnippetById(c *gin.Context, slice []util.Snippet) {
 		}
 	}
 
+	// Only works when a snippet has encrypted data
+	// Waiting for db implementation and all snippets
+	// Will have encrypted data
 	decrypted, err := util.Decrypt(foundSnippet.Code)
 	if err != nil {
 		panic(err)
