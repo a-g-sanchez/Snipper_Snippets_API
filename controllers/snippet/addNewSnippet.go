@@ -17,13 +17,6 @@ func AddNewSnippet(c *gin.Context, slice []util.Snippet) []util.Snippet {
 		})
 	}
 
-	encrypted, err := util.Encrypt([]byte(newSnippet.Code))
-	if err != nil {
-		panic(err)
-	}
-
-	newSnippet.Code = encrypted
-
 	slice = append(slice, *newSnippet)
 
 	c.IndentedJSON(http.StatusCreated, gin.H{

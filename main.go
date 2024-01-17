@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/a-g-sanchez/Snipper_Snippets_API/controllers/snippet"
 	"github.com/a-g-sanchez/Snipper_Snippets_API/controllers/user"
+	"github.com/a-g-sanchez/Snipper_Snippets_API/middleware"
 	"github.com/a-g-sanchez/Snipper_Snippets_API/util"
 	"github.com/gin-gonic/gin"
 )
@@ -15,21 +16,23 @@ func main() {
 
 	router := gin.Default()
 
-	// SNIPPET ROUTES
+	// Snippet route group
+	snippetRoutes := router.Group("/snippets")
+
+	// // POST Route to create a new snippet and encryption middleware
+	snippetRoutes.POST("/", middleware.SnippetEncryption(), func(c *gin.Context) {
+		slice = snippet.AddNewSnippet(c, slice)
+	})
+
 	// GET all snippets or a snippet based on a query for a certain language
-	router.GET("/snippets", func(c *gin.Context) {
+	snippetRoutes.GET("/", func(c *gin.Context) {
 		snippet.GetAllSnippets(c, slice)
 
 	})
 
 	// GET a snippet by ID
-	router.GET("/snippets/:id", func(c *gin.Context) {
+	snippetRoutes.GET("/:id", func(c *gin.Context) {
 		snippet.GetSnippetById(c, slice)
-	})
-
-	// POST / create a new snippet
-	router.POST("/snippets", func(c *gin.Context) {
-		slice = snippet.AddNewSnippet(c, slice)
 	})
 
 	//USER ROUTES
