@@ -6,29 +6,31 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/a-g-sanchez/Snipper_Snippets_API/controllers/user"
 	"github.com/a-g-sanchez/Snipper_Snippets_API/util"
 	"github.com/gin-gonic/gin"
 )
 
-func SnippetEncryption() gin.HandlerFunc {
+func HashPassword() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		var user *user.User
 
-		var newSnippet *util.Snippet
-
-		if err := c.ShouldBindJSON(&newSnippet); err != nil {
+		if err := c.ShouldBindJSON(&user); err != nil {
 			c.IndentedJSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
 			})
 		}
 
-		encryptedData, err := util.Encrypt([]byte(newSnippet.Code))
+		hashedPassword, err := util.HashPassword(user.Password)
 		if err != nil {
-			panic(err)
+			c.IndentedJSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
 		}
 
-		newSnippet.Code = encryptedData
+		user.Password = hashedPassword
 
-		serializedData, err := json.Marshal(newSnippet)
+		serializedData, err := json.Marshal(user)
 		if err != nil {
 			panic(err)
 		}
@@ -37,6 +39,6 @@ func SnippetEncryption() gin.HandlerFunc {
 		c.Request.ContentLength = int64(len(serializedData))
 
 		c.Next()
-	}
 
+	}
 }

@@ -35,14 +35,16 @@ func main() {
 		snippet.GetSnippetById(c, slice)
 	})
 
-	//USER ROUTES
+	// User route group
+	userRoutes := router.Group("/users")
+
 	// POST / create a new user with a hashed and salted password
-	router.POST("/users/", func(c *gin.Context) {
+	userRoutes.POST("/", middleware.HashPassword(), func(c *gin.Context) {
 		usersSlice = user.AddNewUser(c, usersSlice)
 	})
 
 	// GET a user
-	router.GET("/users", func(c *gin.Context) {
+	userRoutes.GET("/", func(c *gin.Context) {
 		user.GetUser(c, usersSlice)
 	})
 

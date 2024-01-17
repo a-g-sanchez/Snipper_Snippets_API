@@ -3,7 +3,6 @@ package user
 import (
 	"net/http"
 
-	"github.com/a-g-sanchez/Snipper_Snippets_API/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,15 +20,6 @@ func AddNewUser(c *gin.Context, slice []User) []User {
 			"error": err.Error(),
 		})
 	}
-
-	hashedPassword, err := util.HashPassword(newUser.Password)
-	if err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-	}
-
-	newUser.Password = hashedPassword
 
 	slice = append(slice, *newUser)
 
