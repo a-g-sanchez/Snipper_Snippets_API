@@ -12,7 +12,13 @@ func main() {
 
 	slice := util.ParseYaml()
 
-	var usersSlice []user.User
+	usersSlice := []user.User{
+		{
+			Id:       1,
+			Username: "Aaron",
+			Password: "uhhhhh",
+		},
+	}
 
 	router := gin.Default()
 
@@ -39,14 +45,18 @@ func main() {
 	userRoutes := router.Group("/users")
 
 	// POST / create a new user with a hashed and salted password
-	userRoutes.POST("/", middleware.HashPassword(), func(c *gin.Context) {
+	userRoutes.POST("/signup", middleware.HashPassword(), func(c *gin.Context) {
 		usersSlice = user.AddNewUser(c, usersSlice)
 	})
 
 	// GET a user
-	userRoutes.GET("/", func(c *gin.Context) {
-		user.GetUser(c, usersSlice)
+	// !! Need to update to a POST route and send the username and password
+	//  Through the req.body rather than the query
+	userRoutes.POST("/login", middleware.CompareHash(&usersSlice), func(c *gin.Context) {
+		user.LoginUser(c)
 	})
+
+	// fmt.Println(usersSlice)
 
 	router.Run()
 }
