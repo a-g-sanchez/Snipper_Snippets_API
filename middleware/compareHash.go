@@ -35,7 +35,6 @@ func CompareHash(userSlice *[]user.User) gin.HandlerFunc {
 
 		}
 
-		// fmt.Println(foundUser)
 		// // *** SHOULD BE END OF TEMP CODE ***
 		// // The rest shouldnt have to change
 

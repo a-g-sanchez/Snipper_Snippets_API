@@ -2,6 +2,7 @@ package user
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/a-g-sanchez/Snipper_Snippets_API/config"
 	"github.com/gin-gonic/gin"
@@ -23,7 +24,10 @@ func LoginUser(c *gin.Context) {
 		"iss": "snippr",
 		"sub": user.Username,
 		"id":  user.Id,
+		// "exp": time.Now().Unix(), <--- Used to expedite creating a token that will expire
+		"exp": time.Now().Add(time.Hour * 24).Unix(),
 	})
+
 	tokenString, err := token.SignedString(key)
 	if err != nil {
 		panic(err)

@@ -25,7 +25,7 @@ func main() {
 	})
 
 	// GET all snippets or a snippet based on a query for a certain language
-	snippetRoutes.GET("/", func(c *gin.Context) {
+	snippetRoutes.GET("/", middleware.Authorize(), func(c *gin.Context) {
 		snippet.GetAllSnippets(c, slice)
 
 	})
@@ -44,6 +44,7 @@ func main() {
 	})
 
 	// POST / login a user
+	//
 	// Need to look into req.user
 	userRoutes.POST("/login", middleware.CompareHash(&usersSlice), func(c *gin.Context) {
 		user.LoginUser(c)
