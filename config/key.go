@@ -17,3 +17,14 @@ func LoadEnv() []byte {
 
 	return key
 }
+
+func LoadJwtKey() []byte {
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Error loading .env file")
+	}
+
+	var key = []byte(os.Getenv("JWT_KEY"))
+
+	return key
+}

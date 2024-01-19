@@ -1,6 +1,9 @@
 package middleware
 
 import (
+	"bytes"
+	"encoding/json"
+	"io"
 	"net/http"
 
 	"github.com/a-g-sanchez/Snipper_Snippets_API/controllers/user"
@@ -43,6 +46,14 @@ func CompareHash(userSlice *[]user.User) gin.HandlerFunc {
 			})
 			c.Abort()
 		}
+
+		serializedData, err := json.Marshal(foundUser)
+		if err != nil {
+			panic(err)
+		}
+
+		c.Request.Body = io.NopCloser(bytes.NewBuffer(serializedData))
+		c.Request.ContentLength = int64(len(serializedData))
 
 		c.Next()
 	}

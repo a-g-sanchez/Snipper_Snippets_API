@@ -3,36 +3,34 @@ package user
 import (
 	"net/http"
 
+	"github.com/a-g-sanchez/Snipper_Snippets_API/config"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 func LoginUser(c *gin.Context) {
 
-	// fmt.Println(c.Request.Body)
-	// var user *User
-	// for _, users := range slice {
-	// 	if users.Username == username {
-	// 		user = &users
-	// 		break
-	// 	}
-	// 	c.IndentedJSON(http.StatusBadRequest, gin.H{
-	// 		"message": fmt.Sprintf("No user with the name %s", username),
-	// 	})
-	// }
+	var user User
 
-	// err := util.ComparePasswords(user.Password, password)
-	// if err != nil {
-	// 	c.IndentedJSON(http.StatusBadRequest, gin.H{
-	// 		"message": "Passwords do not match try again",
-	// 	})
-	// } else {
-	// 	c.IndentedJSON(http.StatusOK, gin.H{
-	// 		"user": user.Username,
-	// 	})
-	// }
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+	}
+
+	key := config.LoadJwtKey()
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"iss": "snippr",
+		"sub": user.Username,
+		"id":  user.Id,
+	})
+	tokenString, err := token.SignedString(key)
+	if err != nil {
+		panic(err)
+	}
 
 	c.IndentedJSON(http.StatusCreated, gin.H{
-		"tokin":  "token goes here",
+		"token":  tokenString,
 		"status": "login successful",
 	})
 }
