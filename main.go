@@ -12,13 +12,7 @@ func main() {
 
 	slice := util.ParseYaml()
 
-	usersSlice := []user.User{
-		{
-			Id:       1,
-			Username: "Aaron",
-			Password: "uhhhhh",
-		},
-	}
+	var usersSlice []user.User
 
 	router := gin.Default()
 
@@ -31,7 +25,7 @@ func main() {
 	})
 
 	// GET all snippets or a snippet based on a query for a certain language
-	snippetRoutes.GET("/", func(c *gin.Context) {
+	snippetRoutes.GET("/", middleware.Authorize(), func(c *gin.Context) {
 		snippet.GetAllSnippets(c, slice)
 
 	})
@@ -44,19 +38,17 @@ func main() {
 	// User route group
 	userRoutes := router.Group("/users")
 
-	// POST / create a new user with a hashed and salted password
-	userRoutes.POST("/signup", middleware.HashPassword(), func(c *gin.Context) {
-		usersSlice = user.AddNewUser(c, usersSlice)
+	// POST / register a new user with a hashed and salted password
+	userRoutes.POST("/register", middleware.HashPassword(), func(c *gin.Context) {
+		usersSlice = user.RegisterUser(c, usersSlice)
 	})
 
-	// GET a user
-	// !! Need to update to a POST route and send the username and password
-	//  Through the req.body rather than the query
+	// POST / login a user
+	//
+	// Need to look into req.user
 	userRoutes.POST("/login", middleware.CompareHash(&usersSlice), func(c *gin.Context) {
 		user.LoginUser(c)
 	})
-
-	// fmt.Println(usersSlice)
 
 	router.Run()
 }

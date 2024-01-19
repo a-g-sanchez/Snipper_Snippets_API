@@ -12,7 +12,7 @@ type User struct {
 	Password string `json:"password"`
 }
 
-func AddNewUser(c *gin.Context, slice []User) []User {
+func RegisterUser(c *gin.Context, slice []User) []User {
 
 	var newUser *User
 
