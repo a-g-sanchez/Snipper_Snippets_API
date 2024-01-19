@@ -20,7 +20,7 @@ func main() {
 	snippetRoutes := router.Group("/snippets")
 
 	// // POST Route to create a new snippet and encryption middleware
-	snippetRoutes.POST("/", middleware.SnippetEncryption(), func(c *gin.Context) {
+	snippetRoutes.POST("/", middleware.Authorize(), middleware.SnippetEncryption(), func(c *gin.Context) {
 		slice = snippet.AddNewSnippet(c, slice)
 	})
 
@@ -31,7 +31,7 @@ func main() {
 	})
 
 	// GET a snippet by ID
-	snippetRoutes.GET("/:id", func(c *gin.Context) {
+	snippetRoutes.GET("/:id", middleware.Authorize(), func(c *gin.Context) {
 		snippet.GetSnippetById(c, slice)
 	})
 
