@@ -35,20 +35,5 @@ func Authorize() gin.HandlerFunc {
 			return
 		}
 
-		// claims, ok := validToken.Claims.(jwt.MapClaims)
-		// if !ok {
-		// 	c.IndentedJSON(http.StatusUnauthorized, gin.H{
-		// 		"error": "unauthorized",
-		// 	})
-		// 	c.Abort()
-		// }
-		// if claims["exp"] != nil {
-		// 	if int64(claims["exp"].(float64)) < time.Now().Unix() {
-		// 		c.IndentedJSON(http.StatusUnauthorized, gin.H{
-		// 			"error": "Token expired",
-		// 		})
-		// 	}
-		// }
-
 	}
 }
