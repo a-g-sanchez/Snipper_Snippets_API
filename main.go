@@ -7,6 +7,7 @@ import (
 
 	"github.com/a-g-sanchez/Snipper_Snippets_API/controllers/app/callback"
 	"github.com/a-g-sanchez/Snipper_Snippets_API/controllers/app/login"
+	"github.com/a-g-sanchez/Snipper_Snippets_API/controllers/app/logout"
 	"github.com/a-g-sanchez/Snipper_Snippets_API/controllers/snippet"
 	"github.com/a-g-sanchez/Snipper_Snippets_API/middleware"
 	"github.com/a-g-sanchez/Snipper_Snippets_API/util"
@@ -28,6 +29,7 @@ func New(auth *util.Authenticator, snippetSlice []util.Snippet) *gin.Engine {
 	// Direct user to login
 	router.GET("/login", login.Handler(auth))
 	router.GET("/callback", callback.Handler(auth))
+	router.GET("/logout", logout.Handler)
 
 	// Snippet route group
 	snippetRoutes := router.Group("/snippets")
