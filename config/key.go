@@ -7,24 +7,13 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func LoadEnv() []byte {
+func LoadKey() []byte {
 	err := godotenv.Load()
 	if err != nil {
 		fmt.Println("Error loading .env file")
 	}
 
 	var key = []byte(os.Getenv("KEY"))
-
-	return key
-}
-
-func LoadJwtKey() []byte {
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Error loading .env file")
-	}
-
-	var key = []byte(os.Getenv("JWT_KEY"))
 
 	return key
 }
